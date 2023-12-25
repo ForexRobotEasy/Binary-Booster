@@ -1,0 +1,103 @@
+
+// Binary Booster
+// Developer: Forex Robot Easy Team
+// Website: forexroboteasy.com
+
+// Include necessary libraries
+#include <Trade\Trade.mqh>
+
+// Define constants
+#define BUY_SIGNAL 1
+#define SELL_SIGNAL 2
+
+// Define variables
+int signal;
+bool isCross;
+bool isArrow;
+
+// Initialize trade object
+CTrade trade;
+
+// Function to check for blue cross signal
+bool isWeakBuySignal()
+{
+    if(isCross && !isArrow)
+        return true;
+    else
+        return false;
+}
+
+// Function to check for strong buy signal
+bool isStrongBuySignal()
+{
+    if(isCross && isArrow)
+        return true;
+    else
+        return false;
+}
+
+// Function to check for red cross signal
+bool isSellSignal()
+{
+    if(signal == SELL_SIGNAL)
+        return true;
+    else
+        return false;
+}
+
+// Function to check for reliable sell signal
+bool isReliableSellSignal()
+{
+    if(isCross && isArrow && signal == SELL_SIGNAL)
+        return true;
+    else
+        return false;
+}
+
+// Function to generate signals
+void generateSignals()
+{
+    // Code to interpret chart data and generate signals
+    // ...
+    
+    // Assign generated signal to global variable
+    signal = BUY_SIGNAL;
+    
+    // Check if cross and arrow appearing together for buy signal
+    if(isStrongBuySignal())
+    {
+        // Execute buy order
+        trade.Buy(Symbol(), 1);
+        
+        // Print buy signal message
+        Print('Strong buy signal detected. Buy order executed.');
+    }
+    else if(isWeakBuySignal())
+    {
+        // Print weak buy signal message
+        Print('Weak buy signal detected.');
+    }
+    else if(isReliableSellSignal())
+    {
+        // Execute sell order
+        trade.Sell(Symbol(), 1);
+        
+        // Print reliable sell signal message
+        Print('Reliable sell signal detected. Sell order executed.');
+    }
+    else if(isSellSignal())
+    {
+        // Print potential sell signal message
+        Print('Potential sell signal detected.');
+    }
+}
+
+// Main program
+void OnTick()
+{
+    // Generate signals
+    generateSignals();
+}
+
+// Program completion
+// ...
